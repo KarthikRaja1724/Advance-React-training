@@ -29,6 +29,6 @@ function stateMiddleware(store){
         }
     }
 }
-const store = createStore(rootReducer);
+const store = createStore(rootReducer,applyMiddleware(logger,stateMiddleware));
 
 export default store;
