@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Products</title>
+    <style>
+        ol{ 
+            list-style: none;
+        }
+        li{ 
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script src="babel.min.js"></script>
+    <!-- 
+        Assignment-2
+        1. Display the products count
+        2. Remove the product on click of the 'Remove' button
+        3. Clear the text box after adding a new product
+     -->
+    <script type="text/babel">
+        class Products extends React.Component{
+            state = { 
+                productNames : [],
+                newProductName : '',
+                counter:0
+            };
+            onAddClick = () => {
+                const newProductNames = [ ...this.state.productNames, this.state.newProductName ];
+                this.setState({ productNames: newProductNames ,counter: newProductNames.length, newProductName:''});
+                
+            }
+            onRemoveClick=(nameIndex)=>{
+            console.log(nameIndex);
+            const productNames = this.state.productNames;
+            const newProductNames = productNames.filter((name,index) => index!=nameIndex );
+            console.log(newProductNames);
+            this.setState({ productNames: newProductNames ,counter: newProductNames.length});
+
+            }
+            render(){
+                const { productNames ,newProductName} = this.state;
+                /* 
+                const productItems = [];
+                for(let index=0, count = productNames.length; index < count; index++){
+                    const productName = productNames[index],
+                        productItem = (<li key={index}>{productName}</li>);
+                    productItems.push(productItem);
+                } 
+                */
+                const productItems = productNames.map((productName, index) => (
+                    <li key={index}>
+                        <div>
+                            {productName}
+                        </div>
+                        <input type="button" value="Remove" onClick={()=>this.onRemoveClick(index)} />
+                    </li>
+                ));
+                return(
+                    <div>
+                        <h3>Products</h3>
+                        <div>
+                            <span>Products Count : </span>
+                            <span> {this.state.counter} </span>
+                        </div>
+                        <hr/>
+                        <label>Product Name :</label>
+                        <input type="text" value={newProductName}onChange={ evt => this.setState({ newProductName: evt.target.value })} />
+                        <input type="button" value="Add" onClick={ this.onAddClick} />
+                        <ol>
+                            {productItems}
+                        </ol>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Products/>, document.getElementById('root'));
+    </script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
